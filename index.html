@@ -302,230 +302,211 @@
         </section>
     </main>
 
-    <script>
-        // Initialize the links array from localStorage or empty array if none exists
-        let savedLinks = JSON.parse(localStorage.getItem('links') || '[]');
+<script>
+    // Load links from localStorage
+    let savedLinks = JSON.parse(localStorage.getItem('links') || '[]');
 
-        // DOM elements
-        const linkForm = document.getElementById('link-form');
-        const linksList = document.getElementById('links-list');
-        const titleInput = document.getElementById('link-title');
-        const urlInput = document.getElementById('link-url');
+    // DOM Elements
+    const linkForm = document.getElementById('link-form');
+    const linksList = document.getElementById('links-list');
+    const titleInput = document.getElementById('link-title');
+    const urlInput = document.getElementById('link-url');
 
-        // Function to save links to localStorage
-        function saveLinks() {
-            localStorage.setItem('links', JSON.stringify(savedLinks));
+    // Debug mode toggle
+    let debugMode = false;
+    const debugToggle = document.getElementById('debug-toggle');
+    const debugPanel = document.getElementById('debug-panel');
+    const statusMessage = document.getElementById('status-message');
+
+    debugToggle.addEventListener('change', (e) => {
+        debugMode = e.target.checked;
+        debugPanel.classList.toggle('visible', debugMode);
+    });
+
+    // Log helper
+    function logMessage(message, error = null, isError = false) {
+        statusMessage.className = isError ? 'error' : 'success';
+        statusMessage.textContent = message;
+        if (debugMode && error) {
+            debugPanel.textContent = `
+[DEBUG]
+Time: ${new Date().toISOString()}
+Error Type: ${error.name}
+Message: ${error.message}
+Stack: ${error.stack}
+            `.trim();
+        } else {
+            debugPanel.textContent = '';
         }
+    }
 
-        // Function to delete a link
-        function deleteLink(index) {
-            savedLinks.splice(index, 1);
-            saveLinks();
-            renderLinks();
-        }
+    // Save to localStorage
+    function saveLinks() {
+        localStorage.setItem('links', JSON.stringify(savedLinks));
+    }
 
-        // Function to create and append a link element
-        function createLinkElement(link, index) {
+    // Render links
+    function renderLinks() {
+        linksList.innerHTML = '';
+        savedLinks.forEach((link, index) => {
             const li = document.createElement('li');
-            
             const a = document.createElement('a');
             a.href = link.url;
             a.textContent = link.title;
             a.target = '_blank';
             a.rel = 'noopener noreferrer';
-            
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'Delete';
-            deleteBtn.className = 'delete-btn';
-            deleteBtn.addEventListener('click', () => deleteLink(index));
+
+            const delBtn = document.createElement('button');
+            delBtn.textContent = 'Delete';
+            delBtn.className = 'delete-btn';
+            delBtn.onclick = () => {
+                savedLinks.splice(index, 1);
+                saveLinks();
+                renderLinks();
+            };
 
             li.appendChild(a);
-            li.appendChild(deleteBtn);
+            li.appendChild(delBtn);
             linksList.appendChild(li);
-        }
-
-        // Function to render all links
-        function renderLinks() {
-            linksList.innerHTML = ''; // Clear existing links
-            savedLinks.forEach((link, index) => createLinkElement(link, index));
-        }
-
-        // Function to export links
-        function exportLinks() {
-            const data = JSON.stringify(savedLinks, null, 2);
-            const blob = new Blob([data], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'linkhub_backup.json';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        // Function to import links
-        function importLinks(file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const importedLinks = JSON.parse(e.target.result);
-                    if (Array.isArray(importedLinks)) {
-                        savedLinks = [...savedLinks, ...importedLinks];
-                        saveLinks();
-                        renderLinks();
-                    } else {
-                        alert('Invalid file format. Please upload a valid JSON file.');
-                    }
-                } catch (error) {
-                    alert('Error reading file. Please make sure it\'s a valid JSON file.');
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        // Handle form submission
-        linkForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const newLink = {
-                title: titleInput.value.trim(),
-                url: urlInput.value.trim()
-            };
-
-            savedLinks.push(newLink);
-            saveLinks();
-            createLinkElement(newLink, savedLinks.length - 1);
-            linkForm.reset();
         });
+    }
 
-        // Export button click handler
-        document.getElementById('export-btn').addEventListener('click', exportLinks);
+    // Export to file
+    function exportLinks() {
+        const data = JSON.stringify(savedLinks, null, 2);
+        const blob = new Blob([data], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'linkhub_backup.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
 
-        // Import button click handler
-        document.getElementById('import-btn').addEventListener('click', () => {
-            document.getElementById('file-input').click();
-        });
-
-        // File input change handler
-        document.getElementById('file-input').addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                importLinks(e.target.files[0]);
-                e.target.value = ''; // Reset file input
-            }
-        });
-
-        // Update Dropbox configuration
-        const DROPBOX_APP_KEY = 'YOUR_APP_KEY_HERE';
-        const dbx = new Dropbox.Dropbox({ 
-            accessToken: null, // Will be set after authentication
-            clientId: DROPBOX_APP_KEY 
-        });
-
-        // Debug mode state
-        let debugMode = false;
-        
-        // Helper function for logging and displaying messages
-        function logMessage(message, error = null, isError = false) {
-            const statusEl = document.getElementById('status-message');
-            const debugPanel = document.getElementById('debug-panel');
-            
-            // Clear previous status
-            statusEl.className = isError ? 'error' : 'success';
-            
-            if (debugMode && error) {
-                statusEl.textContent = `Error: ${message}`;
-                debugPanel.textContent = `Time: ${new Date().toISOString()}
-Error Type: ${error.name}
-Message: ${error.message}
-Stack: ${error.stack}`;
-            } else {
-                statusEl.textContent = message;
-                debugPanel.textContent = '';
-            }
-        }
-
-        // Dropbox authentication function
-        async function authenticateDropbox() {
+    // Import from file
+    function importLinks(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
             try {
-                const authUrl = dbx.auth.getAuthenticationUrl(window.location.href);
-                window.sessionStorage.setItem('dropboxAuthPending', 'true');
-                window.location.href = authUrl;
-            } catch (error) {
-                logMessage('Failed to authenticate with Dropbox', error, true);
-            }
-        }
-
-        // Handle Dropbox authentication callback
-        if (window.location.hash) {
-            const accessToken = window.location.hash.substring(1).split('&')[0].split('=')[1];
-            if (accessToken && sessionStorage.getItem('dropboxAuthPending')) {
-                sessionStorage.removeItem('dropboxAuthPending');
-                dbx.auth.setAccessToken(accessToken);
-                logMessage('Successfully connected to Dropbox');
-            }
-        }
-
-        // Save to Dropbox function
-        async function saveToDropbox() {
-            try {
-                if (!dbx.auth.getAccessToken()) {
-                    return authenticateDropbox();
+                const imported = JSON.parse(e.target.result);
+                if (Array.isArray(imported)) {
+                    savedLinks = [...savedLinks, ...imported];
+                    saveLinks();
+                    renderLinks();
+                } else {
+                    alert('Invalid file format');
                 }
-
-                const data = JSON.stringify(savedLinks);
-                await dbx.filesUpload({
-                    path: '/linkhub_backup.json',
-                    contents: data,
-                    mode: 'overwrite'
-                });
-
-                logMessage('Links saved to Dropbox successfully');
-            } catch (error) {
-                logMessage('Failed to save to Dropbox', error, true);
+            } catch (err) {
+                alert('Failed to read file');
             }
-        }
+        };
+        reader.readAsText(file);
+    }
 
-        // Load from Dropbox function
-        async function loadFromDropbox() {
-            try {
-                if (!dbx.auth.getAccessToken()) {
-                    return authenticateDropbox();
-                }
+    // Event Listeners
+    linkForm.onsubmit = (e) => {
+        e.preventDefault();
+        const newLink = {
+            title: titleInput.value.trim(),
+            url: urlInput.value.trim()
+        };
+        if (!newLink.title || !newLink.url) return;
 
-                const response = await dbx.filesDownload({ path: '/linkhub_backup.json' });
-                const reader = new FileReader();
-                
-                reader.onload = function() {
-                    try {
-                        const importedLinks = JSON.parse(reader.result);
-                        savedLinks = importedLinks;
-                        saveLinks();
-                        renderLinks();
-                        logMessage('Links loaded from Dropbox successfully');
-                    } catch (error) {
-                        logMessage('Failed to parse Dropbox file', error, true);
-                    }
-                };
-
-                reader.readAsText(response.result.fileBlob);
-            } catch (error) {
-                logMessage('Failed to load from Dropbox', error, true);
-            }
-        }
-
-        // Debug toggle handler
-        document.getElementById('debug-toggle').addEventListener('change', (e) => {
-            debugMode = e.target.checked;
-            document.getElementById('debug-panel').classList.toggle('visible', debugMode);
-        });
-
-        // Dropbox button handlers
-        document.getElementById('dropbox-save').addEventListener('click', saveToDropbox);
-        document.getElementById('dropbox-load').addEventListener('click', loadFromDropbox);
-
-        // Initial render of saved links
+        savedLinks.push(newLink);
+        saveLinks();
         renderLinks();
-    </script>
+        linkForm.reset();
+    };
+
+    document.getElementById('export-btn').onclick = exportLinks;
+    document.getElementById('import-btn').onclick = () => document.getElementById('file-input').click();
+    document.getElementById('file-input').onchange = (e) => {
+        if (e.target.files.length > 0) {
+            importLinks(e.target.files[0]);
+            e.target.value = '';
+        }
+    };
+
+    // =========================
+    //  Dropbox Integration 🔐
+    // =========================
+    const DROPBOX_APP_KEY = 'cmc3jvwwp91wmm';
+
+    function getDropboxInstance() {
+        const token = sessionStorage.getItem('dropboxAccessToken');
+        return token ? new Dropbox.Dropbox({ accessToken: token }) : null;
+    }
+
+    async function authenticateDropbox() {
+        try {
+            const authUrl = new Dropbox.Dropbox({ clientId: DROPBOX_APP_KEY })
+                .auth.getAuthenticationUrl(window.location.href);
+            sessionStorage.setItem('dropboxAuthPending', 'true');
+            window.location.href = authUrl;
+        } catch (error) {
+            logMessage('Dropbox authentication failed.', error, true);
+        }
+    }
+
+    // Handle OAuth callback
+    if (window.location.hash.includes('access_token')) {
+        const accessToken = new URLSearchParams(window.location.hash.substring(1)).get('access_token');
+        if (accessToken) {
+            sessionStorage.setItem('dropboxAccessToken', accessToken);
+            logMessage('Connected to Dropbox!');
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }
+
+    async function saveToDropbox() {
+        const dbx = getDropboxInstance();
+        if (!dbx) return authenticateDropbox();
+
+        try {
+            const data = JSON.stringify(savedLinks);
+            await dbx.filesUpload({
+                path: '/linkhub_backup.json',
+                contents: data,
+                mode: 'overwrite'
+            });
+            logMessage('Links saved to Dropbox successfully.');
+        } catch (error) {
+            logMessage('Failed to save to Dropbox.', error, true);
+        }
+    }
+
+    async function loadFromDropbox() {
+        const dbx = getDropboxInstance();
+        if (!dbx) return authenticateDropbox();
+
+        try {
+            const res = await dbx.filesDownload({ path: '/linkhub_backup.json' });
+            const reader = new FileReader();
+            reader.onload = () => {
+                try {
+                    const imported = JSON.parse(reader.result);
+                    savedLinks = imported;
+                    saveLinks();
+                    renderLinks();
+                    logMessage('Links loaded from Dropbox successfully.');
+                } catch (error) {
+                    logMessage('Failed to parse Dropbox file.', error, true);
+                }
+            };
+            reader.readAsText(res.result.fileBlob);
+        } catch (error) {
+            logMessage('Failed to load from Dropbox.', error, true);
+        }
+    }
+
+    document.getElementById('dropbox-save').onclick = saveToDropbox;
+    document.getElementById('dropbox-load').onclick = loadFromDropbox;
+
+    // Initial render
+    renderLinks();
+</script>
+
 </body>
 </html>
