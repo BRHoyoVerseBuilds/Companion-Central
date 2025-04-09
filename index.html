@@ -1,515 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link Hub</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #4a90e2;
-            --shadow-color: rgba(0, 0, 0, 0.1);
-            --spacing-unit: 1rem;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f5f5f5;
-        }
-
-        header {
-            background-color: white;
-            padding: var(--spacing-unit) 0;
-            box-shadow: 0 2px 4px var(--shadow-color);
-            margin-bottom: 2rem;
-        }
-
-        h1 {
-            text-align: center;
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        main {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 var(--spacing-unit);
-        }
-
-        section {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 4px var(--shadow-color);
-        }
-
-        #link-form div {
-            margin-bottom: 1rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-family: inherit;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
-        }
-
-        button {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: 600;
-            transition: background-color 0.2s;
-        }
-
-        button:hover {
-            background-color: #357abd;
-        }
-
-        #links-list {
-            list-style: none;
-        }
-
-        #links-list li {
-            background: white;
-            padding: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-bottom: 0.75rem;
-            transition: transform 0.2s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        #links-list li:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px var(--shadow-color);
-        }
-
-        #links-list a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        #links-list a:hover {
-            text-decoration: underline;
-        }
-
-        .delete-btn {
-            background-color: #ff4444;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            opacity: 0.8;
-            transition: opacity 0.2s;
-        }
-
-        .delete-btn:hover {
-            opacity: 1;
-        }
-
-        .utility-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .utility-btn {
-            background-color: #6c757d;
-            color: white;
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .utility-btn:hover {
-            background-color: #5a6268;
-        }
-
-        #file-input {
-            display: none;
-        }
-
-        .debug-panel {
-            display: none;
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            padding: 1rem;
-            margin-top: 1rem;
-            font-family: monospace;
-            white-space: pre-wrap;
-        }
-
-        .debug-panel.visible {
-            display: block;
-        }
-
-        .debug-toggle {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .debug-toggle input[type="checkbox"] {
-            width: auto;
-        }
-
-        .dropbox-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .dropbox-btn {
-            background-color: #0061ff;
-        }
-
-        .dropbox-btn:hover {
-            background-color: #0052d9;
-        }
-
-        .loading {
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
-        #status-message {
-            padding: 0.75rem;
-            margin: 1rem 0;
-            border-radius: 4px;
-            display: none;
-        }
-
-        #status-message.success {
-            display: block;
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        #status-message.error {
-            display: block;
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        @media (max-width: 600px) {
-            main {
-                padding: 0 0.75rem;
-            }
-
-            section {
-                padding: 1rem;
-            }
-
-            .utility-buttons {
-                flex-direction: column;
-            }
-        }
-    </style>
-    <script src="https://unpkg.com/dropbox/dist/Dropbox-sdk.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Link Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/dropbox/dist/Dropbox-sdk.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      padding: 2rem;
+      background: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+      color: #4a90e2;
+    }
+    form, section {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    input, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      font-size: 1rem;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #fff;
+      margin-bottom: 0.5rem;
+      padding: 1rem;
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .debug-panel {
+      background: #f0f0f0;
+      font-family: monospace;
+      white-space: pre-wrap;
+      padding: 1rem;
+      border-radius: 4px;
+      display: none;
+    }
+    .debug-panel.visible {
+      display: block;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Link Hub</h1>
-    </header>
+  <h1>Link Hub</h1>
 
-    <main>
-        <section id="add-link">
-            <form id="link-form">
-                <div>
-                    <label for="link-title">Title:</label>
-                    <input type="text" id="link-title" name="title" required>
-                </div>
-                <div>
-                    <label for="link-url">URL:</label>
-                    <input type="url" id="link-url" name="url" required>
-                </div>
-                <button type="submit">Save Link</button>
-            </form>
-        </section>
+  <form id="link-form">
+    <input type="text" id="link-title" placeholder="Title" required />
+    <input type="url" id="link-url" placeholder="https://example.com" required />
+    <button type="submit">Add Link</button>
+  </form>
 
-        <section class="utility-buttons">
-            <button id="export-btn" class="utility-btn">
-                📥 Export Links
-            </button>
-            <input type="file" id="file-input" accept=".json">
-            <button id="import-btn" class="utility-btn">
-                📤 Import Links
-            </button>
-            <div class="dropbox-buttons">
-                <button id="dropbox-save" class="utility-btn dropbox-btn">
-                    💾 Save to Dropbox
-                </button>
-                <button id="dropbox-load" class="utility-btn dropbox-btn">
-                    📂 Load from Dropbox
-                </button>
-            </div>
-            <div class="debug-toggle">
-                <input type="checkbox" id="debug-toggle">
-                <label for="debug-toggle">Show Debug Info</label>
-            </div>
-            <div id="status-message"></div>
-            <div id="debug-panel" class="debug-panel"></div>
-        </section>
+  <section>
+    <button id="export-btn">Export Links</button>
+    <button id="import-btn">Import Links</button>
+    <input type="file" id="file-input" accept=".json" style="display:none" />
+    <button id="dropbox-save">Save to Dropbox</button>
+    <button id="dropbox-load">Load from Dropbox</button>
+    <label><input type="checkbox" id="debug-toggle" /> Show Debug Info</label>
+    <div id="status-message"></div>
+    <div id="debug-panel" class="debug-panel"></div>
+  </section>
 
-        <section id="saved-links">
-            <h2>Your Links</h2>
-            <ul id="links-list">
-                <!-- Links will be added here -->
-            </ul>
-        </section>
-    </main>
+  <section>
+    <h2>Your Links</h2>
+    <ul id="links-list"></ul>
+  </section>
 
-    <script>
-    // Load links from localStorage
+  <script>
     let savedLinks = JSON.parse(localStorage.getItem('links') || '[]');
 
-    // DOM Elements
-    const linkForm = document.getElementById('link-form');
+    const form = document.getElementById('link-form');
     const linksList = document.getElementById('links-list');
     const titleInput = document.getElementById('link-title');
     const urlInput = document.getElementById('link-url');
-
-    // Debug mode toggle
-    let debugMode = false;
-    const debugToggle = document.getElementById('debug-toggle');
     const debugPanel = document.getElementById('debug-panel');
     const statusMessage = document.getElementById('status-message');
+    let debugMode = false;
 
-    debugToggle.addEventListener('change', (e) => {
-        debugMode = e.target.checked;
-        debugPanel.classList.toggle('visible', debugMode);
+    document.getElementById('debug-toggle').addEventListener('change', e => {
+      debugMode = e.target.checked;
+      debugPanel.classList.toggle('visible', debugMode);
     });
 
-    // Log helper
     function logMessage(message, error = null, isError = false) {
-        statusMessage.className = isError ? 'error' : 'success';
-        statusMessage.textContent = message;
-        if (debugMode && error) {
-            debugPanel.textContent = `
-[DEBUG]
-Time: ${new Date().toISOString()}
-Error Type: ${error.name}
-Message: ${error.message}
-Stack: ${error.stack}
-            `.trim();
-        } else {
-            debugPanel.textContent = '';
-        }
+      statusMessage.style.color = isError ? 'red' : 'green';
+      statusMessage.textContent = message;
+      debugPanel.textContent = error && debugMode ? `${error.name}\n${error.message}\n${error.stack}` : '';
     }
 
-    // Save to localStorage
     function saveLinks() {
-        localStorage.setItem('links', JSON.stringify(savedLinks));
+      localStorage.setItem('links', JSON.stringify(savedLinks));
     }
 
-    // Render links
     function renderLinks() {
-        linksList.innerHTML = '';
-        savedLinks.forEach((link, index) => {
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.href = link.url;
-            a.textContent = link.title;
-            a.target = '_blank';
-            a.rel = 'noopener noreferrer';
-
-            const delBtn = document.createElement('button');
-            delBtn.textContent = 'Delete';
-            delBtn.className = 'delete-btn';
-            delBtn.onclick = () => {
-                savedLinks.splice(index, 1);
-                saveLinks();
-                renderLinks();
-            };
-
-            li.appendChild(a);
-            li.appendChild(delBtn);
-            linksList.appendChild(li);
-        });
-    }
-
-    // Export to file
-    function exportLinks() {
-        const data = JSON.stringify(savedLinks, null, 2);
-        const blob = new Blob([data], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
+      linksList.innerHTML = '';
+      savedLinks.forEach((link, index) => {
+        const li = document.createElement('li');
         const a = document.createElement('a');
-        a.href = url;
-        a.download = 'linkhub_backup.json';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        a.href = link.url;
+        a.target = '_blank';
+        a.textContent = link.title;
+        const btn = document.createElement('button');
+        btn.textContent = 'Delete';
+        btn.onclick = () => {
+          savedLinks.splice(index, 1);
+          saveLinks();
+          renderLinks();
+        };
+        li.appendChild(a);
+        li.appendChild(btn);
+        linksList.appendChild(li);
+      });
     }
 
-    // Import from file
-    function importLinks(file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            try {
-                const imported = JSON.parse(e.target.result);
-                if (Array.isArray(imported)) {
-                    savedLinks = [...savedLinks, ...imported];
-                    saveLinks();
-                    renderLinks();
-                } else {
-                    alert('Invalid file format');
-                }
-            } catch (err) {
-                alert('Failed to read file');
-            }
-        };
-        reader.readAsText(file);
-    }
-
-    // Event Listeners
-    linkForm.onsubmit = (e) => {
-        e.preventDefault();
-        const newLink = {
-            title: titleInput.value.trim(),
-            url: urlInput.value.trim()
-        };
-        if (!newLink.title || !newLink.url) return;
-
-        savedLinks.push(newLink);
-        saveLinks();
-        renderLinks();
-        linkForm.reset();
+    form.onsubmit = e => {
+      e.preventDefault();
+      savedLinks.push({ title: titleInput.value, url: urlInput.value });
+      saveLinks();
+      renderLinks();
+      form.reset();
     };
 
-    document.getElementById('export-btn').onclick = exportLinks;
+    document.getElementById('export-btn').onclick = () => {
+      const blob = new Blob([JSON.stringify(savedLinks, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'linkhub_backup.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+
     document.getElementById('import-btn').onclick = () => document.getElementById('file-input').click();
-    document.getElementById('file-input').onchange = (e) => {
-        if (e.target.files.length > 0) {
-            importLinks(e.target.files[0]);
-            e.target.value = '';
+
+    document.getElementById('file-input').onchange = e => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const imported = JSON.parse(reader.result);
+          savedLinks = [...savedLinks, ...imported];
+          saveLinks();
+          renderLinks();
+        } catch (err) {
+          logMessage('Failed to import.', err, true);
         }
+      };
+      reader.readAsText(e.target.files[0]);
     };
 
-    // =========================
-    //  Dropbox Integration 🔐
-    // =========================
     const DROPBOX_APP_KEY = 'cmc3jvvwwp91wmm';
 
     function getDropboxInstance() {
-        const token = sessionStorage.getItem('dropboxAccessToken');
-        return token ? new Dropbox.Dropbox({ accessToken: token }) : null;
+      const token = sessionStorage.getItem('dropboxAccessToken');
+      return token ? new Dropbox({ accessToken: token }) : null;
     }
 
     async function authenticateDropbox() {
-        try {
-            const authUrl = await new Dropbox.Dropbox({ clientId: DROPBOX_APP_KEY })
-                .auth.getAuthenticationUrl(window.location.href);
-            sessionStorage.setItem('dropboxAuthPending', 'true');
-            window.location.href = authUrl;
-        } catch (error) {
-            logMessage('Dropbox authentication failed.', error, true);
-        }
+      const redirectUri = window.location.href;
+      const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${DROPBOX_APP_KEY}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}`;
+      sessionStorage.setItem('dropboxAuthPending', 'true');
+      window.location.href = authUrl;
     }
 
-    // Handle OAuth callback
     if (window.location.hash.includes('access_token')) {
-        const accessToken = new URLSearchParams(window.location.hash.substring(1)).get('access_token');
-        if (accessToken) {
-            sessionStorage.setItem('dropboxAccessToken', accessToken);
-            logMessage('Connected to Dropbox!');
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
+      const accessToken = new URLSearchParams(window.location.hash.substring(1)).get('access_token');
+      if (accessToken) {
+        sessionStorage.setItem('dropboxAccessToken', accessToken);
+        logMessage('Connected to Dropbox!');
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
     }
 
     async function saveToDropbox() {
-    const dbx = getDropboxInstance();
-    if (!dbx) return authenticateDropbox();
+      const dbx = getDropboxInstance();
+      if (!dbx) return authenticateDropbox();
 
-    try {
-        const data = JSON.stringify(savedLinks);
+      try {
         await dbx.filesUpload({
-            path: '/linkhub_backup.json',
-            contents: data,
-            mode: { '.tag': 'overwrite' } // ✅ THIS is the fix!
+          path: '/linkhub_backup.json',
+          contents: JSON.stringify(savedLinks),
+          mode: { '.tag': 'overwrite' }
         });
-
-        logMessage('Links saved to Dropbox successfully.');
-    } catch (error) {
-        logMessage('Failed to save to Dropbox.', error, true);
-        console.error("Dropbox Save Error:", error); // helps with deeper logs
+        logMessage('Links saved to Dropbox!');
+      } catch (err) {
+        logMessage('Failed to save to Dropbox.', err, true);
+      }
     }
-}
-
 
     async function loadFromDropbox() {
-        const dbx = getDropboxInstance();
-        if (!dbx) return authenticateDropbox();
+      const dbx = getDropboxInstance();
+      if (!dbx) return authenticateDropbox();
 
-        try {
-            const res = await dbx.filesDownload({ path: '/linkhub_backup.json' });
-            const reader = new FileReader();
-            reader.onload = () => {
-                try {
-                    const imported = JSON.parse(reader.result);
-                    savedLinks = imported;
-                    saveLinks();
-                    renderLinks();
-                    logMessage('Links loaded from Dropbox successfully.');
-                } catch (error) {
-                    logMessage('Failed to parse Dropbox file.', error, true);
-                }
-            };
-            reader.readAsText(res.result.fileBlob);
-        } catch (error) {
-            logMessage('Failed to load from Dropbox.', error, true);
-        }
+      try {
+        const response = await dbx.filesDownload({ path: '/linkhub_backup.json' });
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const imported = JSON.parse(reader.result);
+            savedLinks = imported;
+            saveLinks();
+            renderLinks();
+            logMessage('Links loaded from Dropbox!');
+          } catch (err) {
+            logMessage('Failed to parse Dropbox file.', err, true);
+          }
+        };
+        reader.readAsText(response.fileBlob);
+      } catch (err) {
+        logMessage('Failed to load from Dropbox.', err, true);
+      }
     }
 
     document.getElementById('dropbox-save').onclick = saveToDropbox;
     document.getElementById('dropbox-load').onclick = loadFromDropbox;
 
-    // Initial render
     renderLinks();
-</script>
-
+  </script>
 </body>
 </html>
