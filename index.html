@@ -302,7 +302,7 @@
         </section>
     </main>
 
-<script>
+    <script>
     // Load links from localStorage
     let savedLinks = JSON.parse(localStorage.getItem('links') || '[]');
 
@@ -432,7 +432,7 @@ Stack: ${error.stack}
     // =========================
     //  Dropbox Integration 🔐
     // =========================
-    const DROPBOX_APP_KEY = 'cmc3jvwwp91wmm';
+    const DROPBOX_APP_KEY = 'cmc3jvvwwp91wmm';
 
     function getDropboxInstance() {
         const token = sessionStorage.getItem('dropboxAccessToken');
@@ -441,7 +441,7 @@ Stack: ${error.stack}
 
     async function authenticateDropbox() {
         try {
-            const authUrl = new Dropbox.Dropbox({ clientId: DROPBOX_APP_KEY })
+            const authUrl = await new Dropbox.Dropbox({ clientId: DROPBOX_APP_KEY })
                 .auth.getAuthenticationUrl(window.location.href);
             sessionStorage.setItem('dropboxAuthPending', 'true');
             window.location.href = authUrl;
