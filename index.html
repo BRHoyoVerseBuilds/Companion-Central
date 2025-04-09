@@ -461,21 +461,24 @@ Stack: ${error.stack}
     }
 
     async function saveToDropbox() {
-        const dbx = getDropboxInstance();
-        if (!dbx) return authenticateDropbox();
+    const dbx = getDropboxInstance();
+    if (!dbx) return authenticateDropbox();
 
-        try {
-            const data = JSON.stringify(savedLinks);
-            await dbx.filesUpload({
-                path: '/linkhub_backup.json',
-                contents: data,
-                mode: 'overwrite'
-            });
-            logMessage('Links saved to Dropbox successfully.');
-        } catch (error) {
-            logMessage('Failed to save to Dropbox.', error, true);
-        }
+    try {
+        const data = JSON.stringify(savedLinks);
+        await dbx.filesUpload({
+            path: '/linkhub_backup.json',
+            contents: data,
+            mode: { '.tag': 'overwrite' } // ✅ THIS is the fix!
+        });
+
+        logMessage('Links saved to Dropbox successfully.');
+    } catch (error) {
+        logMessage('Failed to save to Dropbox.', error, true);
+        console.error("Dropbox Save Error:", error); // helps with deeper logs
     }
+}
+
 
     async function loadFromDropbox() {
         const dbx = getDropboxInstance();
