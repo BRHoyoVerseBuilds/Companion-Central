@@ -1,0 +1,227 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Companion Central</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Companion Central</h1>
+            <button id="settingsBtn" class="settings-btn">
+                <i class="fas fa-cog"></i>
+            </button>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search games...">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+    </header>
+
+    <div id="settingsModal" class="settings-modal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h2>Display Settings</h2>
+                <button class="close-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="settings-body">
+                <div class="reset-section">
+                    <button id="resetSettings" class="reset-btn">Reset All Settings</button>
+                    <button id="savePreset" class="preset-btn" disabled>Save as Preset (Coming Soon)</button>
+                </div>
+
+                <div class="settings-category">
+                    <h3>Layout Settings</h3>
+                    <div class="settings-section">
+                        <h4>Card Layout</h4>
+                        <div class="settings-options">
+                            <label class="setting-option">
+                                <input type="radio" name="cardLayout" value="compact">
+                                <span>Compact</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="cardLayout" value="comfortable">
+                                <span>Comfortable</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="cardLayout" value="expanded">
+                                <span>Expanded</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>Header Display</h4>
+                        <div class="settings-options">
+                            <label class="setting-option">
+                                <input type="radio" name="headerDisplay" value="dropdown">
+                                <span>Only show on dropdown</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="headerDisplay" value="above">
+                                <span>Always show above card</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="headerDisplay" value="background">
+                                <span>Use as background</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="headerDisplay" value="hidden">
+                                <span>Hide all headers</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>Card Border Style</h4>
+                        <div class="settings-options">
+                            <label class="setting-option">
+                                <input type="radio" name="cardBorder" value="rounded">
+                                <span>Rounded</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="cardBorder" value="square">
+                                <span>Square</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="cardBorder" value="minimal">
+                                <span>Minimal (no border)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-category">
+                    <h3>Appearance Settings</h3>
+                    <div class="settings-section">
+                        <h4>Theme</h4>
+                        <div class="settings-options">
+                            <label class="setting-option">
+                                <input type="radio" name="theme" value="light">
+                                <span>Light</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="theme" value="dark">
+                                <span>Dark</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="theme" value="system">
+                                <span>System</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>Font Size</h4>
+                        <div class="settings-options">
+                            <label class="setting-option">
+                                <input type="radio" name="fontSize" value="small">
+                                <span>Small</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="fontSize" value="default">
+                                <span>Default</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="fontSize" value="large">
+                                <span>Large</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>Link Style</h4>
+                        <div class="settings-options">
+                            <label class="setting-option">
+                                <input type="radio" name="linkDisplay" value="inline">
+                                <span>Inline list</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="linkDisplay" value="grid">
+                                <span>Button grid</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="linkDisplay" value="icons" disabled>
+                                <span>Icons only (Coming soon)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-category">
+                    <h3>Behavior Settings</h3>
+                    <div class="settings-section">
+                        <h4>Game Sorting</h4>
+                        <div class="settings-options">
+                            <label class="setting-option">
+                                <input type="radio" name="gameSorting" value="alphabetical">
+                                <span>Alphabetical (A-Z)</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="gameSorting" value="recent">
+                                <span>Most Recently Added</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="gameSorting" value="custom" disabled>
+                                <span>Custom (Coming soon)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>Default Dropdown State</h4>
+                        <div class="settings-options">
+                            <label class="setting-option">
+                                <input type="radio" name="dropdownDefault" value="collapsed">
+                                <span>Collapsed</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="dropdownDefault" value="expanded">
+                                <span>Expanded</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>Animation Speed</h4>
+                        <div class="settings-options">
+                            <label class="setting-option">
+                                <input type="radio" name="animationSpeed" value="instant">
+                                <span>Instant</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="animationSpeed" value="smooth">
+                                <span>Smooth</span>
+                            </label>
+                            <label class="setting-option">
+                                <input type="radio" name="animationSpeed" value="slow">
+                                <span>Slow fade</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="filter-container">
+        <div class="series-dropdown-container">
+            <select id="seriesDropdown" class="series-dropdown">
+                <option value="all">All Series</option>
+            </select>
+        </div>
+    </div>
+
+    <main>
+        <div class="games-container" id="gamesContainer">
+            <!-- Game cards will be added dynamically -->
+        </div>
+    </main>
+    
+    <script type="module" src="script.js"></script>
+    <script src="sites.js"></script>
+</body>
+</html>
