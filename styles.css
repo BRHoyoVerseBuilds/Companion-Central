@@ -5,47 +5,64 @@
 }
 
 :root {
-    --primary-bg: #ffffff;
-    --secondary-bg: #f5f7fa;
-    --card-bg: #ffffff;
-    --primary-text: #333333;
-    --secondary-text: #666666;
-    --accent-color: #4c84ff;
-    --accent-hover: #3a70e3;
-    --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.08);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+    /* Base colors */
+    --primary-bg: #0b1120;
+    --secondary-bg: #111827;
+    --card-bg: #1a2234;
+    --primary-text: #ffffff;
+    --secondary-text: #94a3b8;
+    
+    /* Accent colors */
+    --accent-yellow: #f7c045;
+    --accent-orange: #f15a29;
+    --accent-green: #3da35d;
+    --accent-red: #e94f37;
+    
+    /* Updated shadows */
+    --shadow-sm: 0 2px 0 rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 4px 0 rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 6px 0 rgba(0, 0, 0, 0.35);
+    
+    /* Borders */
+    --border-pixel: 2px solid var(--accent-yellow);
+    
+    /* Other values remain the same */
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 20px;
     --transition: all 0.25s ease;
 }
 
-[data-theme="dark"] {
-    --primary-bg: #1a1a1a;
-    --secondary-bg: #252525;
-    --card-bg: #2d2d2d;
-    --primary-text: #ffffff;
-    --secondary-text: #b3b3b3;
-    --accent-color: #5c8fff;
-    --accent-hover: #4a7df3;
-}
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 body {
     font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: var(--secondary-bg);
+    background-color: var(--primary-bg);
+    background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: 0 0, 25px 25px;
     color: var(--primary-text);
     line-height: 1.6;
     min-height: 100vh;
 }
 
+h1, h2, h3, .game-name {
+    font-family: 'Press Start 2P', cursive;
+    letter-spacing: 1px;
+    color: var(--accent-yellow);
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+}
+
 header {
-    background-color: var(--primary-bg);
+    background-color: var(--secondary-bg);
     padding: 1.25rem 1rem;
     box-shadow: var(--shadow-sm);
     position: sticky;
     top: 0;
     z-index: 100;
+    border-bottom: var(--border-pixel);
 }
 
 .header-content {
@@ -61,21 +78,21 @@ h1 {
     font-weight: 700;
     margin-bottom: 1rem;
     text-align: center;
-    color: var(--primary-text);
-    letter-spacing: 0.5px;
 }
 
 .settings-btn {
     background: transparent;
     border: none;
-    color: var(--secondary-text);
+    color: var(--accent-yellow);
     padding: 0.5rem;
     cursor: pointer;
-    transition: var(--transition);
+    transition: transform 0.2s ease;
+    font-size: 1.5rem;
 }
 
 .settings-btn:hover {
-    color: var(--accent-color);
+    transform: scale(1.1);
+    color: var(--accent-orange);
 }
 
 .search-container {
@@ -86,10 +103,9 @@ h1 {
 
 #searchInput {
     width: 100%;
-    padding: 0.9rem 1rem 0.9rem 2.8rem;
-    border: none;
-    border-radius: var(--radius-lg);
-    background-color: var(--secondary-bg);
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid var(--accent-yellow);
+    background-color: var(--card-bg);
     color: var(--primary-text);
     font-size: 1rem;
     transition: var(--transition);
@@ -98,8 +114,8 @@ h1 {
 
 #searchInput:focus {
     outline: none;
-    background-color: var(--secondary-bg);
-    box-shadow: var(--shadow-md);
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 10px rgba(247, 192, 69, 0.3);
 }
 
 .search-icon {
@@ -130,9 +146,8 @@ h1 {
     margin: 0 auto;
     display: block;
     padding: 0.7rem 1rem;
-    border: none;
-    border-radius: var(--radius-lg);
-    background-color: var(--secondary-bg);
+    border: var(--border-pixel);
+    background-color: var(--card-bg);
     color: var(--primary-text);
     font-size: 0.95rem;
     font-weight: 500;
@@ -148,7 +163,7 @@ h1 {
 
 .series-dropdown:focus {
     outline: none;
-    box-shadow: var(--shadow-md);
+    border-color: var(--accent-orange);
 }
 
 .game-tabs-container {
@@ -190,7 +205,7 @@ h1 {
 }
 
 .game-tab.active {
-    background-color: var(--accent-color);
+    background-color: var(--accent-yellow);
     color: white;
     box-shadow: var(--shadow-md);
 }
@@ -209,15 +224,17 @@ main {
 
 .game-card {
     background-color: var(--card-bg);
+    border: var(--border-pixel);
     border-radius: var(--radius-md);
     overflow: hidden;
     box-shadow: var(--shadow-md);
-    transition: var(--transition);
+    transition: all 0.2s ease;
 }
 
 .game-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+    border-color: var(--accent-orange);
+    animation: glowPulse 2s infinite;
 }
 
 .game-header {
@@ -227,6 +244,21 @@ main {
     cursor: pointer;
     gap: 1rem;
     position: relative;
+    overflow: hidden;
+}
+
+.game-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        transparent 50%,
+        rgba(11, 17, 32, 0.5)
+    );
+    pointer-events: none;
 }
 
 .game-icon {
@@ -243,7 +275,7 @@ main {
 .game-name {
     font-size: 1.3rem;
     font-weight: 700;
-    color: var(--primary-text);
+    color: var(--accent-yellow);
     margin-bottom: 0.25rem;
 }
 
@@ -301,14 +333,16 @@ main {
 }
 
 .resource-item {
-    padding: 0.75rem;
     background-color: var(--secondary-bg);
+    border: 2px solid var(--accent-yellow);
+    padding: 0.75rem;
     border-radius: var(--radius-sm);
-    transition: var(--transition);
+    transition: all 0.2s ease;
 }
 
 .resource-item:hover {
-    background-color: rgba(76, 132, 255, 0.05);
+    border-color: var(--accent-orange);
+    transform: translateX(4px);
 }
 
 .resource-link {
@@ -334,7 +368,7 @@ main {
 }
 
 .resource-link i {
-    color: var(--accent-color);
+    color: var(--accent-green);
     opacity: 0.7;
     transition: var(--transition);
 }
@@ -401,10 +435,10 @@ main {
 
 .site-game {
     font-size: 0.8rem;
-    color: var(--accent-color);
+    color: var(--accent-yellow);
     font-weight: 600;
     text-transform: uppercase;
-    background-color: rgba(76, 132, 255, 0.1);
+    background-color: rgba(247, 192, 69, 0.1);
     padding: 0.3rem 0.6rem;
     border-radius: var(--radius-sm);
     margin-bottom: 0.8rem;
@@ -426,7 +460,7 @@ main {
     display: block;
     width: 100%;
     padding: 0.9rem;
-    background-color: var(--accent-color);
+    background-color: var(--accent-yellow);
     color: white;
     border: none;
     border-radius: var(--radius-md);
@@ -441,7 +475,7 @@ main {
 }
 
 .main-link-btn:hover {
-    background-color: var(--accent-hover);
+    background-color: var(--accent-orange);
     box-shadow: var(--shadow-md);
 }
 
@@ -466,7 +500,7 @@ main {
 }
 
 .submenu-toggle:hover {
-    color: var(--accent-color);
+    color: var(--accent-yellow);
 }
 
 .submenu-links {
@@ -492,7 +526,7 @@ main {
 
 .submenu-link:hover {
     background-color: var(--secondary-bg);
-    color: var(--accent-color);
+    color: var(--accent-yellow);
 }
 
 .no-results {
@@ -521,13 +555,14 @@ main {
 }
 
 .settings-content {
-    background: var(--primary-bg);
+    background: var(--secondary-bg);
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     width: 100%;
     max-height: 85vh;
     overflow-y: auto;
     box-shadow: var(--shadow-lg);
     animation: slideUp 0.3s ease;
+    border: var(--border-pixel);
 }
 
 @keyframes slideUp {
@@ -547,13 +582,16 @@ main {
     align-items: center;
     position: sticky;
     top: 0;
-    background: var(--primary-bg);
+    background: var(--secondary-bg);
     z-index: 2;
 }
 
 .settings-header h2 {
     font-size: 1.2rem;
     margin: 0;
+    color: var(--accent-yellow);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1rem;
 }
 
 .close-btn {
@@ -566,7 +604,7 @@ main {
 }
 
 .close-btn:hover {
-    color: var(--accent-color);
+    color: var(--accent-yellow);
 }
 
 .settings-body {
@@ -585,7 +623,7 @@ main {
 }
 
 .settings-category h3 {
-    color: var(--accent-color);
+    color: var(--accent-yellow);
     font-size: 1.1rem;
     margin-bottom: 1.25rem;
 }
@@ -617,7 +655,8 @@ main {
 }
 
 .setting-option:hover {
-    background: var(--secondary-bg);
+    background: var(--card-bg);
+    border: 2px solid var(--accent-yellow);
 }
 
 .setting-option input {
@@ -648,8 +687,9 @@ main {
 }
 
 .reset-btn {
-    background: #ff4444;
+    background: var(--accent-red);
     color: white;
+    border: 2px solid #fff;
 }
 
 .preset-btn {
@@ -699,127 +739,18 @@ main {
     }
 }
 
-.game-header-media {
-    width: 100%;
-    border-radius: var(--radius-sm);
-    margin-bottom: 1rem;
-    box-shadow: var(--shadow-sm);
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.2rem;
+    }
+    
+    .game-name {
+        font-size: 1rem;
+    }
 }
 
-.game-card.background-header {
-    position: relative;
-    background-size: cover;
-    background-position: center;
-}
-
-.game-card.background-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: var(--radius-md);
-}
-
-.game-card.background-header .game-header,
-.game-card.background-header .resources-container {
-    position: relative;
-    z-index: 1;
-}
-
-.game-card.background-header .game-name,
-.game-card.background-header .game-series {
-    color: white;
-}
-
-.game-card.background-header .toggle-btn {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.background-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: var(--radius-md);
-    z-index: 0;
-}
-
-video.game-header-media {
-    height: 200px;
-    object-fit: cover;
-}
-
-[data-border="rounded"] .game-card {
-    border-radius: var(--radius-md);
-}
-
-[data-border="square"] .game-card {
-    border-radius: 0;
-}
-
-[data-border="minimal"] .game-card {
-    border-radius: 0;
-    box-shadow: none;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-[data-link-display="grid"] .resources-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
-}
-
-[data-link-display="grid"] .resource-item {
-    height: 100%;
-}
-
-[data-animation="instant"] .game-card .resources-container {
-    transition: none;
-}
-
-[data-animation="smooth"] .game-card .resources-container {
-    transition: all 0.3s ease;
-}
-
-[data-animation="slow"] .game-card .resources-container {
-    transition: all 0.6s ease;
-}
-
-[data-layout="compact"] .game-card {
-    margin-bottom: 0.75rem;
-}
-
-[data-layout="compact"] .game-header {
-    padding: 0.75rem;
-}
-
-[data-layout="compact"] .game-icon {
-    width: 48px;
-    height: 48px;
-}
-
-[data-layout="expanded"] .game-card {
-    margin-bottom: 1.75rem;
-}
-
-[data-layout="expanded"] .game-header {
-    padding: 1.75rem;
-}
-
-[data-layout="expanded"] .game-icon {
-    width: 80px;
-    height: 80px;
-}
-
-[data-font-size="small"] {
-    font-size: 0.9rem;
-}
-
-[data-font-size="large"] {
-    font-size: 1.1rem;
+@keyframes glowPulse {
+    0% { box-shadow: 0 0 5px rgba(247, 192, 69, 0.2); }
+    50% { box-shadow: 0 0 15px rgba(247, 192, 69, 0.4); }
+    100% { box-shadow: 0 0 5px rgba(247, 192, 69, 0.2); }
 }
