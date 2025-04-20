@@ -8,6 +8,53 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('gamesContainer').innerHTML = 
             '<div class="error-message">Unable to load game data.</div>';
     }
+    
+    // Initialize suggestion modal
+    const suggestBtn = document.getElementById('suggestBtn');
+    const suggestModal = document.getElementById('suggestModal');
+    const closeButtons = suggestModal.querySelectorAll('.close-btn');
+    
+    suggestBtn.addEventListener('click', () => {
+        suggestModal.classList.add('active');
+    });
+    
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            suggestModal.classList.remove('active');
+        });
+    });
+    
+    suggestModal.addEventListener('click', (e) => {
+        if (e.target === suggestModal) {
+            suggestModal.classList.remove('active');
+        }
+    });
+    
+    // Handle form submission feedback
+    const suggestionForm = document.getElementById('suggestionForm');
+    suggestionForm.addEventListener('submit', (e) => {
+        // Show loading state on button
+        const submitBtn = suggestionForm.querySelector('.submit-btn');
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        submitBtn.disabled = true;
+    });
+
+    // Add resource button functionality
+    document.getElementById('addResourceBtn').addEventListener('click', () => {
+        const container = document.getElementById('resourceFields');
+        const resourceCount = container.children.length + 1;
+        
+        const newGroup = document.createElement('div');
+        newGroup.className = 'resource-field-group';
+        newGroup.innerHTML = `
+            <h4>Resource ${resourceCount}</h4>
+            <input type="text" class="res-title" placeholder="Guide Title" required>
+            <input type="text" class="res-site" placeholder="Site Name" required>
+            <input type="url" class="res-url" placeholder="URL" required>
+        `;
+        
+        container.appendChild(newGroup);
+    });
 });
 
 function initializeApp(games) {
@@ -66,7 +113,10 @@ function renderGames(games) {
                 <img src="${game.icon}" alt="${game.game} icon" class="game-icon">
                 <div class="game-info">
                     <h2 class="game-name">${game.game}</h2>
-                    <div class="game-series">${game.series}</div>
+                    <div class="game-meta">
+                        <span class="game-series">${game.series}</span>
+                        ${game.credit ? `<span class="game-credit">Added by ${game.credit}</span>` : ''}
+                    </div>
                 </div>
                 <button class="toggle-btn">
                     <i class="fas fa-chevron-down"></i>
@@ -350,3 +400,30 @@ function applyHeaderDisplay(displayMode) {
         }
     });
 }
+
+function packageSuggestion() {
+    const titles = [...document.querySelectorAll('.res-title')].map(el => el.value);
+    const sites = [...document.querySelectorAll('.res-site')].map(el => el.value);
+    const urls = [...document.querySelectorAll('.res-url')].map(el => el.value);
+
+    const resources = titles.map((_, i) => ({
+        title: titles[i],
+        site: sites[i],
+        url: urls[i]
+    }));
+
+    const json = {
+        game: document.getElementById('gameInput').value,
+        series: document.getElementById('seriesInput').value,
+        icon: document.getElementById('iconInput').value,
+        header: document.getElementById('headerInput').value,
+        headerDisplay: document.getElementById('headerDisplayInput').value,
+        credit: document.getElementById('creditInput').value,
+        resources
+    };
+
+    document.getElementById('jsonData').value = JSON.stringify(json, null, 2);
+    return true;
+}
+
+window.packageSuggestion = packageSuggestion;
