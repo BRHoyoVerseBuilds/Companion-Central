@@ -6,6 +6,7 @@ const companionGames = [
     icon: "https://github.com/BRHoyoVerseBuilds/link-hub/blob/main/icons/gi.png?raw=true",
     header: "https://cdn2.steamgriddb.com/hero_thumb/226982ab9123047f22996f01ae642335.jpg",
     headerDisplay: "background",
+    credit: "BReitan",
     resources: [
       {
         title: "Character Guide",
@@ -45,6 +46,7 @@ const companionGames = [
     icon: "https://github.com/BRHoyoVerseBuilds/link-hub/blob/main/icons/hsr.png?raw=true",
     header: "https://cdn2.steamgriddb.com/hero_thumb/b075f38fffcf4988fc1b2074cc41178a.jpg",
     headerDisplay: "background",
+    credit: "BReitan",
     resources: [
       {
         title: "Characters",
@@ -84,6 +86,7 @@ const companionGames = [
     icon: "https://github.com/BRHoyoVerseBuilds/link-hub/blob/main/icons/zzz.png?raw=true",
     header: "https://cdn2.steamgriddb.com/hero_thumb/d2e61fdefe27476fdf3d1fb5a4431f07.jpg",
     headerDisplay: "background",
+    credit: "BReitan",
     resources: [
       {
         title: "Characters",
@@ -118,6 +121,7 @@ const companionGames = [
     icon: "https://github.com/BRHoyoVerseBuilds/link-hub/blob/main/icons/ww.png?raw=true",
     header: "https://cdn2.steamgriddb.com/hero_thumb/7e18454f36f5cd1928d139de02c257ee.jpg",
     headerDisplay: "background",
+    credit: "BReitan",
     resources: [
       {
         title: "Characters",
@@ -157,6 +161,7 @@ const companionGames = [
     icon: "https://cdn2.steamgriddb.com/icon_thumb/ee41631df54898d36ba32e583a1da09f.png",
     header: "https://raw.githubusercontent.com/BRHoyoVerseBuilds/link-hub/refs/heads/main/icons/bg3.png",
     headerDisplay: "background",
+    credit: "BReitan",
     resources: [
       {
         title: "Build Planner",
@@ -181,6 +186,7 @@ const companionGames = [
     icon: "https://raw.githubusercontent.com/BRHoyoVerseBuilds/link-hub/refs/heads/main/icons/Poke_Ball.webp",
     header: "https://cdn2.steamgriddb.com/hero_thumb/606ecad3a7b53802990bf38b32ee2daf.jpg",
     headerDisplay: "background",
+    credit: "BReitan",
     resources: [
       {
         title: "Interactive Map",
@@ -195,6 +201,7 @@ const companionGames = [
     icon: "https://raw.githubusercontent.com/BRHoyoVerseBuilds/link-hub/refs/heads/main/icons/arceus-poke-ball.png",
     header: "https://cdn2.steamgriddb.com/hero_thumb/76c2a93eb29a838fa6215824e585ee15.jpg",
     headerDisplay: "background",
+    credit: "BReitan",
     resources: [
       {
         title: "Interactive Map",
@@ -202,5 +209,30 @@ const companionGames = [
         url: "https://mapgenie.io/pokemon-legends-arceus/maps/hisui-region"
       }
     ]
-  }
+  },
+  {
+    "game": "RPG Maker MV/MZ",
+    "series": "RPG Maker Series",
+    "icon": "https://cdn.prod.website-files.com/5efc0159f9a97ba05a8b2902/65b8b3ed67da93688b2de8d6_header-icon-1-56x56.png",
+    "header": "https://cdn.nivoli.com/rpggamers/images/articles/3612/-topheader__header-feature.jpg",
+    "headerDisplay": "background",
+    "credit": "BReitan",
+    "resources": [
+        {
+            "title": "Sprites and Tiles",
+            "site": "Itch.io",
+            "url": "https://itch.io/game-assets/free/tag-rpgmaker/tag-sprites"
+        },
+        {
+            "title": "Music",
+            "site": "Bitmidi",
+            "url": "https://bitmidi.com/"
+        },
+        {
+            "title": "Tutorials - By @RPGGameMaker",
+            "site": "YouTube",
+            "url": "https://www.youtube.com/@rpggamemaker6684/featured"
+        }
+    ]
+},
 ];
