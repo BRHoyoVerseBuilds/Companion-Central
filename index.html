@@ -15,9 +15,14 @@
                 <span style="color: var(--accent-yellow)">GAME</span>
                 <span style="color: var(--accent-orange)">COMPANION</span>
             </h1>
-            <button id="settingsBtn" class="settings-btn">
-                <i class="fas fa-cog"></i>
-            </button>
+            <div class="header-buttons">
+                <button id="suggestBtn" class="action-btn suggest-btn">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <button id="settingsBtn" class="action-btn settings-btn">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
         </div>
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="Search games...">
@@ -207,6 +212,88 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="suggestModal" class="modal">
+        <div class="modal-content suggest-content">
+            <div class="modal-header">
+                <h2>Suggest Resources</h2>
+                <button class="close-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="suggestionForm" action="https://formspree.io/f/mpwpvrdl" method="POST" onsubmit="return packageSuggestion()">
+                    <div class="form-group">
+                        <label for="gameInput">Game Title</label>
+                        <input type="text" id="gameInput" name="game" required 
+                               placeholder="e.g. Genshin Impact">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="seriesInput">Game Series</label>
+                        <input type="text" id="seriesInput" name="series" required
+                               placeholder="e.g. HoYoVerse Series">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="iconInput">Icon URL</label>
+                        <input type="url" id="iconInput" name="icon" required
+                               placeholder="Direct link to game icon image">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="headerInput">Header Image/Video URL</label>
+                        <input type="url" id="headerInput" name="header"
+                               placeholder="Direct link to header media (optional)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="headerDisplayInput">Header Display Style</label>
+                        <select id="headerDisplayInput" name="headerDisplay">
+                            <option value="dropdown">Show in dropdown</option>
+                            <option value="above">Show above card</option>
+                            <option value="background">Use as background</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="creditInput">Name for credit</label>
+                        <input type="text" id="creditInput" name="credit" 
+                               placeholder="Your name or username to be credited">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="emailInput">Your email (optional)</label>
+                        <input type="email" id="emailInput" name="email" 
+                               placeholder="you@example.com">
+                    </div>
+
+                    <div class="resources-section">
+                        <h3>Resource Links</h3>
+                        <div id="resourceFields">
+                            <div class="resource-field-group">
+                                <h4>Resource 1</h4>
+                                <input type="text" class="res-title" placeholder="Guide Title" required>
+                                <input type="text" class="res-site" placeholder="Site Name" required>
+                                <input type="url" class="res-url" placeholder="URL" required>
+                            </div>
+                        </div>
+                        <button type="button" id="addResourceBtn" class="add-resource-btn">
+                            <i class="fas fa-plus"></i> Add Another Resource
+                        </button>
+                    </div>
+
+                    <input type="hidden" name="json" id="jsonData">
+
+                    <p class="form-note">
+                        All suggestions are manually reviewed. If approved, you'll be credited using the name provided above.
+                    </p>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Send Suggestion
+                    </button>
+                </form>
             </div>
         </div>
     </div>
