@@ -48,6 +48,24 @@ body {
     min-height: 100vh;
 }
 
+#openInBrowserBar {
+  background: #222;
+  color: white;
+  padding: 8px;
+  text-align: center;
+  font-size: 14px;
+  font-family: sans-serif;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
+#openInBrowserLink {
+  color: #00adee;
+  text-decoration: underline;
+}
+
 h1, h2, h3, .game-name {
     font-family: 'Press Start 2P', cursive;
     letter-spacing: 1px;
