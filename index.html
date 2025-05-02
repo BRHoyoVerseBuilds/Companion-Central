@@ -317,5 +317,11 @@
     
     <script type="module" src="script.js"></script>
     <script src="sites.js"></script>
+    <script>
+  document.getElementById('openInBrowserLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    window.open(window.location.href, '_blank');
+  });
+    </script>
 </body>
 </html>
